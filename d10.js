@@ -152,3 +152,20 @@ const findDiff = (route) => {
 findChain(0);
 const diffs = findDiff(highScoreRoute);
 console.log(diffs[3] * diffs[1]);
+
+
+
+
+const ipts = devs.reduce((r, d) => ({...r, [d]: [d - 1, d - 2, d - 3].filter(nd => devSet.has(nd))}), {});
+const paths = devs.reduce((r, d) => ({...r, [d]: {}}), {});
+
+const count = (d) => {
+  const total = d === 0 ? 1 : ipts[d].reduce((t, ld) => t + paths[d][ld], 0);
+  for(let nd of opts[d]) {
+    if (paths[nd][d]) continue;
+    paths[nd][d] = (paths[nd][d] || 0) + total;
+    count(nd);
+  }
+}
+
+console.log(count(0));
